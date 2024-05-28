@@ -25,13 +25,12 @@ def status():
 def stats():
     """Return the count of all objects in each class"""
     classes = {
-        'Amenity': Amenity,
-        'BaseModel': BaseModel,
-        'City': City,
-        'Place': Place,
-        'Review': Review,
-        'State': State,
-        'User': User
+        'amenities': Amenity,
+        'cities': City,
+        'places': Place,
+        'reviews': Review,
+        'states': State,
+        'users': User
     }
     counts = {}
     for cls_name, cls in classes.items():
