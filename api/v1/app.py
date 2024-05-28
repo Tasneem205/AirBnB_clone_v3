@@ -21,7 +21,7 @@ def teardown_db(exception):
 @app.errorhandler(404)
 def not_found(error):
     data = {"error": "Not found"}
-    json_data = json.dumps(data, indent=4) + '\n'
+    json_data = json.dumps(data, indent=2) + '\n'
     response = Response(json_data, mimetype='application/json')
     response.status_code = 404
     return response
