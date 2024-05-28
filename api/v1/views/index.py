@@ -2,6 +2,7 @@
 """
 index file
 """
+import json
 from flask import jsonify
 from . import app_views
 from models import storage
@@ -17,7 +18,7 @@ from models.user import User
 @app_views.route('/status', methods=['GET'])
 def status():
     """Returns a JSON status"""
-    return jsonify({"status": "OK"})
+    return json.dumps({"status": "OK"}, indent=4) + '\n'
 
 
 @app_views.route('/stats', methods=['GET'])
@@ -35,4 +36,4 @@ def stats():
     counts = {}
     for cls_name, cls in classes.items():
         counts[cls_name] = storage.count(cls)
-    return jsonify(counts)
+    return json.dumps(counts, indent=4) + '\n'
