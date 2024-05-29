@@ -30,11 +30,11 @@ def get_amenity(amenity_id):
     return response
 
 
-@app_views.route('/amenities/<state_id>', methods=['DELETE'],
+@app_views.route('/amenities/<amenity_id>', methods=['DELETE'],
                  strict_slashes=False)
-def delete_amenity(state_id):
+def delete_amenity(amenity_id):
     """delete a state"""
-    state = storage.get(State, state_id)
+    state = storage.get(Amenity, amenity_id)
     if state is None:
         abort(404)
     state.delete()
@@ -47,26 +47,23 @@ def delete_amenity(state_id):
 def add_new_amenity():
     """create a new instance of state"""
     if not request.get_json():
-        response = json.dumps({"error": "Not a JSON"}, indent=4) + '\n'
-        return response, 400
+        abort(400)
     if 'name' not in request.get_json():
-        response = json.dumps({"error": "Missing name"}, indent=4) + '\n'
-        return response, 400
+        abort(400)
     js = request.get_json()
-    obj = State(**js)
+    obj = Amenity(**js)
     obj.save()
     response = json.dumps(obj.to_deict, indent=4) + '\n'
     return response, 201
 
 
-@app_views.route('/amenities/<string:state_id>', methods=['PUT'],
+@app_views.route('/amenities/<string:amenity_id>', methods=['PUT'],
                  strict_slashes=False)
-def update_amenity(state_id):
+def update_amenity(amenity_id):
     """ put method """
     if not request.get_json():
-        response = json.dumps({"error": "Not a JSON"}, indent=4) + '\n'
-        return response, 400
-    obj = storage.get(State, state_id)
+        abort(400)
+    obj = storage.get(Amenity, amenity_id)
     if obj is None:
         abort(404)
     for key, value in request.get_json().items():
