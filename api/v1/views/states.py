@@ -69,5 +69,4 @@ def put_method(state_id):
         if key not in ['id', 'created_at', 'updated']:
             setattr(obj, key, value)
     storage.save()
-    response = json.dumps(obj.to_dict(), indent=4) + '\n'
-    return response
+    return jsonify(obj.to_dict())
