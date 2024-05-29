@@ -11,7 +11,7 @@ import json
 
 
 @app_views.route('/amenities', methods=['GET'], strict_slashes=False)
-def get_states():
+def get_amenities():
     """Retrieves the list of all Amenities objects"""
     states = storage.all(Amenity).values()
     states_list = [state.to_dict() for state in states]
@@ -21,7 +21,7 @@ def get_states():
 
 @app_views.route('/amenities/<amenity_id>', methods=['GET'],
                  strict_slashes=False)
-def get_state(amenity_id):
+def get_amenity(amenity_id):
     """Retrieves a State object"""
     state = storage.get(Amenity, amenity_id)
     if state is None:
@@ -32,7 +32,7 @@ def get_state(amenity_id):
 
 @app_views.route('/amenities/<state_id>', methods=['DELETE'],
                  strict_slashes=False)
-def delete_state(state_id):
+def delete_amenity(state_id):
     """delete a state"""
     state = storage.get(State, state_id)
     if state is None:
@@ -44,7 +44,7 @@ def delete_state(state_id):
 
 
 @app_views.route('/amenities/', methods=['POST'])
-def add_new_state():
+def add_new_amenity():
     """create a new instance of state"""
     if not request.get_json():
         response = json.dumps({"error": "Not a JSON"}, indent=4) + '\n'
@@ -61,7 +61,7 @@ def add_new_state():
 
 @app_views.route('/amenities/<string:state_id>', methods=['PUT'],
                  strict_slashes=False)
-def put_method(state_id):
+def update_amenity(state_id):
     """ put method """
     if not request.get_json():
         response = json.dumps({"error": "Not a JSON"}, indent=4) + '\n'
