@@ -46,9 +46,11 @@ def delete_state(state_id):
 def add_new_state():
     """create a new instance of state"""
     if not request.get_json():
-        return make_response(jsonify({"error": "Not a JSON"}), 400)
+        response = json.dumps({"error": "Not a JSON"}, indent=4) + '\n'
+        return response, 400
     if 'name' not in request.get_json():
-        return make_response(jsonify({"error": "Missing name"}), 400)
+        response = json.dumps({"error": "Missing name"}, indent=4) + '\n'
+        return response, 400
     js = request.get_json()
     obj = State(**js)
     obj.save()
@@ -61,7 +63,8 @@ def add_new_state():
 def put_method(state_id):
     """ put method """
     if not request.get_json():
-        return make_response(jsonify({"error": "Not a JSON"}), 400)
+        response = json.dumps({"error": "Not a JSON"}, indent=4) + '\n'
+        return response, 400
     obj = storage.get(State, state_id)
     if obj is None:
         abort(404)
@@ -69,4 +72,5 @@ def put_method(state_id):
         if key not in ['id', 'created_at', 'updated']:
             setattr(obj, key, value)
     storage.save()
-    return jsonify(obj.to_dict())
+    response = json.dumps(obj.to_dict(), indent=4) + '\n'
+    return response
