@@ -14,7 +14,7 @@ def get_states():
     """Retrieves the list of all State objects"""
     states = storage.all(State).values()
     states_list = [state.to_dict() for state in states]
-    response = json.dumps(states_list, indent=4) + '\n'
+    response = jsonify(states_list)
     return response
 
 
@@ -25,7 +25,7 @@ def get_state(state_id):
     state = storage.get(State, state_id)
     if state is None:
         abort(404)
-    response = json.dumps(state.to_dict(), indent=4) + '\n'
+    response = jsonify(state.to_dict())
     return response
 
 
@@ -38,7 +38,7 @@ def delete_state(state_id):
         abort(404)
     state.delete()
     storage.save()
-    response = json.dumps({}, indent=4) + '\n'
+    response = jsonify({})
     return response
 
 
@@ -48,12 +48,12 @@ def add_new_state():
     if not request.get_json():
         abort(400)
     if 'name' not in request.get_json():
-        response = json.dumps({"error": "Missing name"}, indent=4) + '\n'
+        response = jsonify({"error": "Missing name"})
         return response, 400
     js = request.get_json()
     obj = State(**js)
     obj.save()
-    response = json.dumps(obj.to_deict, indent=4) + '\n'
+    response = jsonify(obj.to_dict())
     return response, 201
 
 
@@ -70,5 +70,5 @@ def put_method(state_id):
         if key not in ['id', 'created_at', 'updated']:
             setattr(obj, key, value)
     storage.save()
-    response = json.dumps(obj.to_dict(), indent=4) + '\n'
+    response = jsonify(obj.to_dict())
     return response
