@@ -18,7 +18,8 @@ from models.user import User
 @app_views.route('/status', methods=['GET'])
 def status():
     """Returns a JSON status"""
-    return json.dumps({"status": "OK"}, indent=4) + '\n'
+    response = Response({"status": "OK"}, mimetype='application/json')
+    return response
 
 
 @app_views.route('/stats', methods=['GET'])
