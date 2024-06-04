@@ -46,6 +46,8 @@ def delete_amenity(amenity_id):
 @app_views.route('/amenities/', methods=['POST'])
 def add_new_amenity():
     """create a new instance of state"""
+    if request.content_type != 'application/json':
+        return abort(400, 'Not a JSON')
     if not request.get_json():
         abort(400)
     if 'name' not in request.get_json():
