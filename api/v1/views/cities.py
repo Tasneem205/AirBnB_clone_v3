@@ -46,6 +46,8 @@ def del_city(city_id):
                  strict_slashes=False)
 def create_obj_city(state_id):
     """ create new instance """
+    if request.content_type != 'application/json':
+        return abort(400, 'Not a JSON')
     state = storage.get(State, state_id)
     if state is None:
         abort(404)
@@ -63,8 +65,10 @@ def create_obj_city(state_id):
 
 @app_views.route('/cities/<string:city_id>', methods=['PUT'],
                  strict_slashes=False)
-def post_city(city_id):
-    """  """
+def put_city(city_id):
+    """ update a city """
+    if request.content_type != 'application/json':
+        return abort(400, 'Not a JSON')
     if not request.get_json():
         return make_response(jsonify({"error": "Not a JSON"}), 400)
     obj = storage.get(City, city_id)
