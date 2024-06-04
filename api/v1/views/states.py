@@ -45,10 +45,10 @@ def delete_state(state_id):
 @app_views.route('/states/', methods=['POST'])
 def add_new_state():
     """create a new instance of state"""
-    if request.content_type != 'appliation/json':
-        return jsonify({"error": "Not a json"}), 400
+    if request.content_type != 'application/json':
+        return abort(400, 'Not a JSON')
     if not request.get_json():
-        abort(400)
+        return abort(400, 'Not a JSON')
     if 'name' not in request.get_json():
         response = jsonify({"error": "Missing name"})
         return response, 400
@@ -63,10 +63,10 @@ def add_new_state():
                  strict_slashes=False)
 def put_method(state_id):
     """ put method """
-    if request.content_type != 'appliation/json':
-        return jsonify({"error": "Not a json"}), 400
+    if request.content_type != 'application/json':
+        return abort(400, 'Not a JSON')
     if not request.get_json():
-        abort(400)
+        return abort(400, 'Not a JSON')
     obj = storage.get(State, state_id)
     if obj is None:
         abort(404)

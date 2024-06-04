@@ -32,7 +32,8 @@ def not_found(error):
 
 @app.errorhandler(400)
 def bad_request(error):
-    response = json.dumps({"error": "Not a JSON"}, indent=2) + '\n'
+    json_data = json.dumps({"error": "Not a JSON"}, indent=2) + '\n'
+    response = Response(json_data, mimetype='application/json')
     response.status_code = 400
     return response
 
