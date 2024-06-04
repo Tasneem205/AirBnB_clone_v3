@@ -26,8 +26,8 @@ def get_amenity(amenity_id):
     state = storage.get(Amenity, amenity_id)
     if state is None:
         abort(404)
-    response = json.dumps(state.to_dict(), indent=4) + '\n'
-    return response
+    response = jsonify(state.to_dict())
+    return response, 200
 
 
 @app_views.route('/amenities/<amenity_id>', methods=['DELETE'],
@@ -39,8 +39,8 @@ def delete_amenity(amenity_id):
         abort(404)
     state.delete()
     storage.save()
-    response = json.dumps({}, indent=4) + '\n'
-    return response
+    response = jsonify({})
+    return response, 200
 
 
 @app_views.route('/amenities/', methods=['POST'])
@@ -53,7 +53,7 @@ def add_new_amenity():
     js = request.get_json()
     obj = Amenity(**js)
     obj.save()
-    response = json.dumps(obj.to_deict, indent=4) + '\n'
+    response = jsonify(obj.to_dict())
     return response, 201
 
 
@@ -61,6 +61,8 @@ def add_new_amenity():
                  strict_slashes=False)
 def update_amenity(amenity_id):
     """ put method """
+    if request.content_type != 'application/json':
+        return abort(400, 'Not a JSON')
     if not request.get_json():
         abort(400)
     obj = storage.get(Amenity, amenity_id)
@@ -70,5 +72,5 @@ def update_amenity(amenity_id):
         if key not in ['id', 'created_at', 'updated']:
             setattr(obj, key, value)
     storage.save()
-    response = json.dumps(obj.to_dict(), indent=4) + '\n'
-    return response
+    data = jsonify(obj.to_dict())
+    return data, 200
