@@ -43,7 +43,7 @@ def del_user(user_id):
 def create_obj_user():
     """ create new instance """
     if request.content_type != 'application/json':
-        return aboty(400, 'Not a JSON')
+        return abrot(400, 'Not a JSON')
     if not request.get_json():
         return make_response(jsonify({"error": "Not a JSON"}), 400)
     if 'email' not in request.get_json():
