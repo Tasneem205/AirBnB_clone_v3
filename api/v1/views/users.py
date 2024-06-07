@@ -42,6 +42,8 @@ def del_user(user_id):
                  strict_slashes=False)
 def create_obj_user():
     """ create new instance """
+    if request.content_type != 'application/json':
+        return aboty(400, 'Not a JSON')
     if not request.get_json():
         return make_response(jsonify({"error": "Not a JSON"}), 400)
     if 'email' not in request.get_json():
@@ -56,8 +58,10 @@ def create_obj_user():
 
 @app_views.route('/users/<string:user_id>', methods=['PUT'],
                  strict_slashes=False)
-def post_user(user_id):
-    """  """
+def put_user(user_id):
+    """ update function """
+    if request.content_type != 'application/json':
+        return abort(400, 'Not a JSON')
     if not request.get_json():
         return make_response(jsonify({"error": "Not a JSON"}), 400)
     obj = storage.get(User, user_id)
