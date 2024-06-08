@@ -24,7 +24,7 @@ def get_all_reviews(place_id):
     return jsonify(reviews)
 
 
-@app_views.route('/review/<string:review_id>', methods=['GET'],
+@app_views.route('/reviews/<string:review_id>', methods=['GET'],
                  strict_slashes=False)
 def get_review(review_id):
     """ get place by id """
@@ -46,7 +46,7 @@ def del_review(review_id):
     return jsonify({})
 
 
-@app_views.route('/placess/<string:place_id>/reviews', methods=['POST'],
+@app_views.route('/places/<string:place_id>/reviews', methods=['POST'],
                  strict_slashes=False)
 def create_obj_review(place_id):
     """ create new instance """
@@ -61,7 +61,7 @@ def create_obj_review(place_id):
         return make_response(jsonify({"error": "Missing user_id"}), 400)
     if 'text' not in request.get_json():
         return make_response(jsonify({"error": "Missing text"}), 400)
-    kwargs = request.get_json()  
+    kwargs = request.get_json()
     user = storage.get(User, kwargs['user_id'])
     if user is None:
         abort(404)
@@ -76,6 +76,8 @@ def post_review(review_id):
     """ update by id """
     if not request.get_json():
         return make_response(jsonify({"error": "Not a JSON"}), 400)
+    if request.content_type != 'application/json':
+        abort(400, 'Not a JSON')
     obj = storage.get(Review, review_id)
     if obj is None:
         abort(404)
