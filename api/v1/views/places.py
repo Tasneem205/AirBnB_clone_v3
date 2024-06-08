@@ -52,6 +52,8 @@ def create_obj_place(city_id):
     city = storage.get(City, city_id)
     if city is None:
         abort(404)
+    if request.content_type != 'application/json':
+        abort(400, 'Not a JSON')
     if not request.get_json():
         return make_response(jsonify({"error": "Not a JSON"}), 400)
     if 'user_id' not in request.get_json():
